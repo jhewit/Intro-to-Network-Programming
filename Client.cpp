@@ -3,7 +3,8 @@
 //             homework assignment for CSS432 at the University of Washington.
 //             It's a Linux-based client application that creates a socket,
 //             connects to a server application, and sends the incoming
-//             arguments
+//             arguments to the server in an array. It then receives the
+//             the reply and reads the contents and outputs the time statistics.
 //------------------------------------------------------------------------------
 
 #include <iostream>
@@ -25,10 +26,10 @@
 using namespace std;
 
 //----------------------------------main----------------------------------------
-//Description: The primary driver for the server. It creates the initial socket
-//             via the server port number being passed in as an argument,
-//             then listens for a connecting host and establishes threads for
-//             each connection.
+//Description: The primary driver for the client. It creates the initial socket
+//             via the client port number being passed in as an argument, as
+//             well as the data for how often to run the connections, the buffer
+//             size, the hostname of the server, and the type of data to send.
 //------------------------------------------------------------------------------
 
 int main(int argc, char* argv[])
