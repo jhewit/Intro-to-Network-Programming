@@ -1,5 +1,9 @@
 //--------------------------------Client.cpp------------------------------------
-//Description:
+//Description: This program is the client application for a client-server
+//             homework assignment for CSS432 at the University of Washington.
+//             It's a Linux-based client application that creates a socket,
+//             connects to a server application, and sends the incoming
+//             arguments
 //------------------------------------------------------------------------------
 
 #include <iostream>
@@ -29,13 +33,14 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-
+  // Checking to ensure the correct number of arguments are being received
   if (argc < 7 || atoi(argv[6]) > 3 || atoi(argv[6]) < 1)
   {
     perror("Too few arguments passed in, expected 6.");
     exit(1);
   }
 
+  // Assign variables from arguments
   int port        = atoi(argv[1]);
   int repitition  = atoi(argv[2]);
   int nbufs       = atoi(argv[3]);
@@ -56,7 +61,7 @@ int main(int argc, char* argv[])
        << "\nBuffer Size: " << bufsize << "\nServer IP Name: "
        << serverIp << "\nScenario Type: " << type << endl;
 
-  // Receive a hostent structure corresponding to the IP
+  // Receive a hostent structure corresponding to the IP - check if host resolves
   struct hostent* host = gethostbyname(serverIp);
 
   if (host == NULL)
@@ -74,24 +79,25 @@ int main(int argc, char* argv[])
   sendSockAddr.sin_addr.s_addr  = inet_addr(inet_ntoa(*(struct in_addr*)*host->h_addr_list));
   sendSockAddr.sin_port         = htons(port);
 
-  // Open a stream-oriented socket with the internet address Family
+  // Open a stream-oriented socket with the internet address Family - check for failure
   if ((clientSd = socket(AF_INET, SOCK_STREAM, 0)) <= -1)
   {
     perror("Unable to open a client socket.");
   }
 
-  // Connect to server socket
+  // Connect to server socket - check for failed connection
   int connectStatus = connect(clientSd, (sockaddr*)&sendSockAddr, sizeof(sendSockAddr));
   if (connectStatus < 0)
   {
     perror("Failed to connect to the server.");
   }
 
+  // Create array, initialize loop and timer variables
   char databuf[nbufs][bufsize];
   int readCount;
   struct timeval startClock, stopClock, lapTime;
 
-  gettimeofday(&startClock, NULL);
+  gettimeofday(&startClock, NULL); // Start clock
 
   for (int i = 0; i < repitition; i++)
   {
@@ -118,11 +124,13 @@ int main(int argc, char* argv[])
     }
   }
 
-  gettimeofday(&lapTime, NULL); // Exit loop of repititions and stop the clock
+  gettimeofday(&lapTime, NULL); // Exit loop of repititions and get the lap time
 
   int count;
   read(clientSd, &count, sizeof(count)); // Read incoming data and stop the clock
   gettimeofday(&stopClock, NULL);
+
+  // Calculate time
   long lap = (stopClock.tv_sec - lapTime.tv_sec) * 1000000;
   lap += (stopClock.tv_usec - lapTime.tv_usec);
   long totalTime = (stopClock.tv_sec - startClock.tv_sec) * 1000000;
@@ -131,6 +139,7 @@ int main(int argc, char* argv[])
   cout << "Test " << type << ": data-sending time " << lap << " usec, round-trip time = "
        << totalTime << " usec, #read = " << readCount << endl;
 
+  // Close the socket
   close(clientSd);
 
   return 0;

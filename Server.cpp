@@ -27,7 +27,6 @@
 
 using namespace std;
 const int BUFSIZE = 1500;      // Buffer size, hw requirement
-//const int SERVER_PORT = 5859; // Server port, hw requirement **********REMOVE THIS*************
 
 struct thread_data
 {
@@ -42,11 +41,13 @@ struct thread_data
 //------------------------------------------------------------------------------
 void *writeStats(void *data)
 {
+  // Initialize variables
   int count;
   char databuf[BUFSIZE];
   struct timeval startClock, stopClock;
-  gettimeofday(&startClock, NULL);     // Start clock
+  gettimeofday(&startClock, NULL);      // Start clock
 
+  // Loop over thread and read contents
   for (int i = 0; i < ((thread_data *)data)->repetition; i++)
   {
     for (int nRead = 0; (nRead += read(((thread_data *)data)->sd, databuf + nRead, BUFSIZE - nRead)) < BUFSIZE; ++count);
@@ -55,13 +56,14 @@ void *writeStats(void *data)
 
   gettimeofday(&stopClock, NULL);     // Stop clock
 
+
+  // Calculate time
   long deltaTime = (stopClock.tv_sec - startClock.tv_sec) * 1000000;
   deltaTime += (stopClock.tv_usec - startClock.tv_usec);
 
-  cout << "data-receiving time = " << deltaTime << " usec" << endl;
+  cout << "data-receiving time = " << deltaTime << " usec" << endl; //Display time
 
-  // Send count and socket data
-  write(((thread_data *)data)->sd, &count, sizeof(count));
+  write(((thread_data *)data)->sd, &count, sizeof(count)); // Send count and socket data
 } //end of writeStats
 
 //----------------------------------main----------------------------------------
@@ -71,8 +73,8 @@ void *writeStats(void *data)
 //             each connection.
 //------------------------------------------------------------------------------
 
-int main(int argc, char* argv[]) {
-
+int main(int argc, char* argv[])
+{
   int port        = atoi(argv[1]);    // Client port number
   int repetition  = atoi(argv[2]);    // Number of repititions on the read
 
@@ -122,12 +124,13 @@ int main(int argc, char* argv[]) {
 
     // Create new thread
     pthread_t new_thread;
-    data  = new thread_data;
-    data->repetition          = repetition;
-    data->sd                  = newSd;
-    int iret1 = pthread_create(&new_thread, NULL, writeStats, (void*) data);
+    data              = new thread_data;
+    data->repetition  = repetition;
+    data->sd          = newSd;
+    int iret1         = pthread_create(&new_thread, NULL, writeStats, (void*) data);
   }
 
+  // Close socket and free memory
   close(data->sd);
 
   return 0;
