@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
   long lap = (stopClock.tv_sec - lapTime.tv_sec) * 1000000;
   lap += (stopClock.tv_usec - lapTime.tv_usec);
   long totalTime = (stopClock.tv_sec - startClock.tv_sec) * 1000000;
-  totalTime += (stopClock.tv_sec - startClock.tv_sec);
+  totalTime += (stopClock.tv_usec - startClock.tv_usec);
 
   cout << "Test " << type << ": data-sending time " << lap << " usec, round-trip time = "
        << totalTime << " usec, #read = " << readCount << endl;
