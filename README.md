@@ -14,6 +14,7 @@
 
     ```g++ Client.cpp -o Client```
 2. Run the Client with the correct number of arguments:
+
    *Port#, #Repetitions, #data buffers, buffer size (in bytes), hostname, type of send process*
 
     ```./Client 4000 20000 15 100 localhost 1```
