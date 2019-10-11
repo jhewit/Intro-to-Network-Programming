@@ -131,8 +131,8 @@ int main(int argc, char* argv[])
   gettimeofday(&stopClock, NULL);
 
   // Calculate time
-  long lap = (lapTime.tv_sec - stopClock.tv_sec) * 1000000;
-  lap += (lapTime.tv_usec - stopClock.tv_usec);
+  long lap = (lapTime.tv_sec - startClock.tv_sec) * 1000000;
+  lap += (lapTime.tv_usec - startClock.tv_usec);
   long totalTime = (stopClock.tv_sec - startClock.tv_sec) * 1000000;
   totalTime += (stopClock.tv_usec - startClock.tv_usec);
 
