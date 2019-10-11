@@ -56,12 +56,6 @@ int main(int argc, char* argv[])
     exit(1);
   }
 
-  // LOGS -- REMOVE LATER
-  cout << "Port: " << port << "\nRepitition: " << repitition
-       << "\nNumber of Data Buffers: " << nbufs
-       << "\nBuffer Size: " << bufsize << "\nServer IP Name: "
-       << serverIp << "\nScenario Type: " << type << endl;
-
   // Receive a hostent structure corresponding to the IP - check if host resolves
   struct hostent* host = gethostbyname(serverIp);
 

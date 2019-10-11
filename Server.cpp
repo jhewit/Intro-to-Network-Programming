@@ -28,6 +28,7 @@
 using namespace std;
 const int BUFSIZE = 1500;      // Buffer size, hw requirement
 
+// Structure for holding data for an individual thread's repetition and socket descriptor
 struct thread_data
 {
   int repetition;
