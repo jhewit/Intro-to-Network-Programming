@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
   int port        = atoi(argv[1]);    // Client port number
   int repetition  = atoi(argv[2]);    // Number of repititions on the read
 
-  int serverSd;                  // Declare serverSd
+  int serverSd;                  // Declare a server socket descriptor
   sockaddr_in acceptSockAddr;    // Declare a sockaddr_in structure
 
   bzero((char*)&acceptSockAddr, sizeof(acceptSockAddr)); // Zero initialize it
@@ -95,13 +95,13 @@ int main(int argc, char* argv[])
 
   // Set the SO_REUSEADDR option
   const int on = 1;
-  if (setsockopt(serverSd, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on)) < 0)
+  if (setsockopt(serverSd, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof(on)) <= -1)
   {
     perror("Unable to execute setsockopt SO_REUSEADDR.");
   }
 
   // Bind this socket to its local Address
-  if (bind(serverSd, (sockaddr*)&acceptSockAddr, sizeof(acceptSockAddr)) < 0)
+  if (bind(serverSd, (sockaddr*)&acceptSockAddr, sizeof(acceptSockAddr)) <= -1)
   {
     perror("Unable to bind the server socket to the local address.");
   }
@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
   struct thread_data *data; // Declare thread_data struct pointer
   while (1)
   {
-    if ((newSd = accept(serverSd, (sockaddr *)&newSockAddr, &newSockAddrSize)) < 0)
+    if ((newSd = accept(serverSd, (sockaddr *)&newSockAddr, &newSockAddrSize)) <= -1)
     {
       perror("Unable to accept incoming socket connection.");
     }

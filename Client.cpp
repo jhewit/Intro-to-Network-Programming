@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     perror("Unable to resolve host.");
   }
 
-  int clientSd;             // Declare clientSd
+  int clientSd;             // Declare a client socket descriptor
   sockaddr_in sendSockAddr; // Declare a sockaddr_in
 
   // Zero initialize it
@@ -95,7 +95,6 @@ int main(int argc, char* argv[])
 
   // Create array, initialize loop and timer variables
   char databuf[nbufs][bufsize];
-  int readCount;
   struct timeval startClock, stopClock, lapTime;
 
   gettimeofday(&startClock, NULL); // Start clock
@@ -132,13 +131,13 @@ int main(int argc, char* argv[])
   gettimeofday(&stopClock, NULL);
 
   // Calculate time
-  long lap = (stopClock.tv_sec - lapTime.tv_sec) * 1000000;
-  lap += (stopClock.tv_usec - lapTime.tv_usec);
+  long lap = (lapTime.tv_sec - stopClock.tv_sec) * 1000000;
+  lap += (lapTime.tv_usec - stopClock.tv_usec);
   long totalTime = (stopClock.tv_sec - startClock.tv_sec) * 1000000;
   totalTime += (stopClock.tv_usec - startClock.tv_usec);
 
   cout << "Test " << type << ": data-sending time " << lap << " usec, round-trip time = "
-       << totalTime << " usec, #read = " << readCount << endl;
+       << totalTime << " usec, #read = " << count << endl;
 
   // Close the socket
   close(clientSd);
