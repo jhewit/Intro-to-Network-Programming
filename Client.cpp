@@ -35,9 +35,15 @@ using namespace std;
 int main(int argc, char* argv[])
 {
   // Checking to ensure the correct number of arguments are being received
-  if (argc < 7 || atoi(argv[6]) > 3 || atoi(argv[6]) < 1)
+  if (argc < 7)
   {
-    perror("Too few arguments passed in, expected 6.");
+    perror("Incorrect number of arguments entered. Please run again.");
+    exit(1);
+  }
+  // Checking to ensure the correct test type cases are being received
+  if (atoi(argv[6]) > 3 || atoi(argv[6]) < 1)
+  {
+    perror("Invalid type entered. Please choose 1, 2, or 3.");
     exit(1);
   }
 
@@ -102,7 +108,7 @@ int main(int argc, char* argv[])
         write(clientSd, databuf[j], bufsize);
       }
     }
-    else if (type == 2) // WriteV case - Sends all buffers of an array of data structures
+    else if (type == 2) // WriteV case - Sends all buffers of an array of iovec data structures
     {
       struct iovec vector[nbufs];
       for (int j = 0; j < nbufs; j++)

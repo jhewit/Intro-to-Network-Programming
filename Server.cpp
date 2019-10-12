@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
   acceptSockAddr.sin_port         = htons(port);
 
   // Open a stream-oriented socket with the internet address Family
-  if ((serverSd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+  if ((serverSd = socket(AF_INET, SOCK_STREAM, 0)) <= -1)
   {
     perror("Unable to open a server socket.");
   }
